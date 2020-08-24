@@ -43,6 +43,7 @@ with models.DAG(
     load_csv = gcs_to_bq.GoogleCloudStorageToBigQueryOperator(
         task_id='cloud_to_bigquery',
         bucket='aluguel-data-scraper',
+        source_format='CSV',
         source_objects=['alugueis.csv'],
         destination_project_dataset_table='alugueis.alugueis',
         schema_fields=[
@@ -58,6 +59,7 @@ with models.DAG(
         ],
         write_disposition='WRITE_TRUNCATE',
         skip_leading_rows=1,
+        autodetect=True,
         dag=dag
     )
 

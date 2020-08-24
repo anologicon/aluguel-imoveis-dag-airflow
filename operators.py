@@ -47,7 +47,10 @@ class DataSourceToCsv(BaseOperator):
             
             return elementText
 
-        for cidade in ('florianopolis', 'brusque', 'blumenau'):
+        cidades = ('florianopolis', 'brusque', 'blumenau','itajai','gaspar','bombinhas',
+        'balneario-camboriu', 'biguacu')
+
+        for cidade in cidades:
 
             for page in range(1,30):
                 
@@ -94,15 +97,13 @@ class DataSourceToCsv(BaseOperator):
                     areaFindLi = row.find_all('li', {'class': 'feature__item text-small js-areas'})
                     
                     areaText = 0
-
+                    
                     for li in areaFindLi:
                         areaSpanFind = li.find_all('span')[1]
                         areaText = areaSpanFind.text
+                        areaText = areaText.replace('m²','').replace(' ', '')
 
-                    Area.append(areaText
-                        .replace('m²','')
-                        .replace(' ', '')
-                    )
+                    Area.append(areaText)
 
                     quartosFindLi = row.find_all('li', 'feature__item text-small js-bedrooms')
                     
