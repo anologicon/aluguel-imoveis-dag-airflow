@@ -13,4 +13,4 @@ como fonte de dados.
 
 #### Diagrama da arquitetura
 
-[flow]: "https://github.com/anologicon/aluguel-imoveis-dag-airflow/blob/master/images/ELTflow.png" "Data Flow ETL"
+![Flow diagram](https://github.com/anologicon/aluguel-imoveis-dag-airflow/blob/master/images/ELTflow.png)
