@@ -55,6 +55,7 @@ with models.DAG(
             {'name': 'Banheiros', 'type': 'INTEGER', 'mode': 'NULLABLE'},
             {'name': 'Vagas', 'type': 'INTEGER', 'mode': 'NULLABLE'},
             {'name': 'Cidade', 'type': 'STRING', 'mode': 'NULLABLE'},
+            {'name': 'TipoNegociacao', 'type': 'STRING', 'mode': 'NULLABLE'},
             {'name': 'Endereco', 'type': 'STRING', 'mode': 'NULLABLE'},
         ],
         write_disposition='WRITE_TRUNCATE',
