@@ -63,18 +63,17 @@ class DataSourceToCsv(BaseOperator):
         
         tipoNegociacoes = ("Casas",
         "Apartamentos",
-        "Quitinetes",
-        "Casas de condomínio")
+        "Quitinetes")
 
         for cidade in cidades:
 
             for tipoNegociacao in tipoNegociacoes:
 
-                for page in range(1, 3):
-                    sleepTime = randint(15,60)
+                for page in range(1, 30):
+                    sleepTime = randint(60,120)
                     http = urllib3.HTTPSConnectionPool('www.zapimoveis.com.br', port=443, cert_reqs='CERT_NONE')       
                     
-                    url = '/aluguel/'+slugify(tipoNegociacao)+'/sc+'+cidade+'/?__zt=srl%3Aa&transacao=Aluguel&tipoUnidade=Residencial&tipo=Im%C3%B3vel%20usado&pagina='+str(page)
+                    url = '/aluguel/'+slugify(tipoNegociacao)+'/sc+'+slugify(cidade)+'/?__zt=srl%3Aa&transacao=Aluguel&tipoUnidade=Residencial&tipo=Im%C3%B3vel%20usado&pagina='+str(page)
 
                     page = http.request('GET',url)
 
@@ -90,7 +89,12 @@ class DataSourceToCsv(BaseOperator):
 
                         enderecoFind = row.find('p', 'color-dark text-regular simple-card__address')
 
-                        Endereco.append(enderecoFind.text)
+                        enderecoText = ''
+
+                        if(enderecoFind):
+                            enderecoText = enderecoFind.text
+                        
+                        Endereco.append(enderecoText)
 
                         valor = row.find("p", "simple-card__price js-price heading-regular heading-regular__bolder align-left")
 
@@ -163,12 +167,12 @@ class DataSourceToCsv(BaseOperator):
         df['TipoAluguel'] = TipoAluguel
         df['Iptu'] = Iptu
         df['Area'] = Area
-        df['TipoNegociacao'] = TipoNegociacao
         df['Quartos'] = Quartos
         df['Banheiros'] = Banheiros
         df['Vagas'] = Vagas
         df['Cidade'] = Cidade
         df['Endereco'] = Endereco
+        df['TipoNegociacao'] = TipoNegociacao
 
         # End scrapper
         df.to_csv('alugueis.csv', index=False)

@@ -40,7 +40,7 @@ with models.DAG(
         task_id = 'save_imoveis'
     )
 
-    load_csv = gcs_to_bq.GoogleCloudStorageToBigQueryOperator(
+    task3 = gcs_to_bq.GoogleCloudStorageToBigQueryOperator(
         task_id='cloud_to_bigquery',
         bucket='aluguel-data-scraper',
         source_format='CSV',
@@ -55,8 +55,8 @@ with models.DAG(
             {'name': 'Banheiros', 'type': 'INTEGER', 'mode': 'NULLABLE'},
             {'name': 'Vagas', 'type': 'INTEGER', 'mode': 'NULLABLE'},
             {'name': 'Cidade', 'type': 'STRING', 'mode': 'NULLABLE'},
-            {'name': 'TipoNegociacao', 'type': 'STRING', 'mode': 'NULLABLE'},
             {'name': 'Endereco', 'type': 'STRING', 'mode': 'NULLABLE'},
+            {'name': 'TipoNegociacao', 'type': 'STRING', 'mode': 'NULLABLE'},
         ],
         write_disposition='WRITE_TRUNCATE',
         skip_leading_rows=1,
@@ -67,4 +67,4 @@ with models.DAG(
     #fluxo de execução
     task1
     task2.set_upstream([task1])
-    load_csv.set_upstream([task2])
+    task3.set_upstream([task2])
